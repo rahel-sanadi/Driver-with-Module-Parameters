@@ -1,0 +1,42 @@
+ /*1. Driver with Module Parameters
+Description:
+Create a simple kernel module that prints a customized greeting using printk. Allow the user to set a name via a module parameter.
+Skills Covered:
+a.	Writing kernel modules
+b.	printk() usage
+c.	module_param() usage*/
+#include <linux/init.h>         // For __init and __exit macros
+#include <linux/module.h>       // Core header for modules 
+#include <linux/kernel.h>       // For printk function 
+
+MODULE_LICENSE("GPL");  // GPL = open source license
+MODULE_AUTHOR("Rahil");  // Module author name
+MODULE_DESCRIPTION("A simple module parameter"); // Description
+MODULE_VERSION("4.4"); // Version info
+
+
+static char *name = "World"; // Default value for the 'name' parameter
+
+// Register 'name' as a string module parameter with no sysfs access
+module_param(name, charp, 0000);
+
+//Describe the parameter 
+MODULE_PARM_DESC(name, "A name to print in the greeting");
+
+// The module is loaded into the kernel
+static int __init greeting_init(void)
+{
+    printk("Greeting Module: Hello, %s!\n", name);
+    return 0; 
+}
+
+// This function runs when the module is removed from the kernel
+static void __exit greeting_exit(void)
+{
+    printk("Greeting Module: Goodbye, %s!\n", name);
+}
+
+// function to call at module load and unload
+module_init(greeting_init);  
+module_exit(greeting_exit);  
+
