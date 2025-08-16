@@ -1,0 +1,66 @@
+#include <linux/module.h>       
+#include <linux/fs.h>          
+#include <linux/uaccess.h>     
+
+#define DEVICE_NAME "led"       // Device name for /dev/led
+
+static int major;               // To store the major number
+
+//  Function will run when something is written to /dev/led
+static ssize_t led_write(struct file *file, const char __user *buf, size_t len, loff_t *off) {
+    char input;
+
+    // Copy 1 byte from user space
+    if (copy_from_user(&input, buf, 1)) {
+        return -EFAULT;
+    }
+
+    // Simulate LED control by printing to kernel log
+    if (input == '1') {
+        printk("LED ON\n");
+    } else if (input == '0') {
+        printk("LED OFF\n");
+    } else {
+        printk("Invalid input! Use 1 (ON) or 0 (OFF)\n");
+    }
+
+    return len;
+}
+
+// Define file operations structure
+static struct file_operations fops = {
+    .owner = THIS_MODULE,
+    .write = led_write,
+};
+
+// Called when module is loaded
+static int __init led_init(void) {
+    major = register_chrdev(0, DEVICE_NAME, &fops); // Dynamically assign major number
+
+    if (major < 0) {
+        printk("Failed to register LED device\n");
+        return major;
+    }
+
+    printk("LED device registered: /dev/%s with major %d\n", DEVICE_NAME, major);
+    return 0;
+}
+
+// Called when module is removed
+static void __exit led_exit(void) {
+    unregister_chrdev(major, DEVICE_NAME); 
+    printk("LED device unregistered\n");
+}
+
+module_init(led_init);
+module_exit(led_exit);
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Beginner");
+MODULE_DESCRIPTION("Simple LED Character Driver");
+
+
+
+
+
+
