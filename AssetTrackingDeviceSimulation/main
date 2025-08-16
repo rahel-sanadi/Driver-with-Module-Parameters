@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include "payload.h"
+
+static float random_float(float min, float max) {
+    return min + (float)rand() / ((float)RAND_MAX / (max - min));
+}
+
+int main() {
+    srand((unsigned)time(NULL));
+
+    SensorData data;
+    data.temperature = random_float(-20.0f, 50.0f);
+    data.latitude = random_float(-90.0f, 90.0f);
+    data.longitude = random_float(-180.0f, 180.0f);
+
+    printf("Generated Sensor Data:\n");
+    printf("Temperature: %.2f °C\n", data.temperature);
+    printf("Latitude: %.5f\n", data.latitude);
+    printf("Longitude: %.5f\n", data.longitude);
+
+    uint8_t payload[32];
+    size_t payload_len;
+    if (create_payload(&data, payload, &payload_len) == 0) {
+        printf("Payload: ");
+        print_payload_hex(payload, payload_len);
+    } else {
+        fprintf(stderr, "Error creating payload.\n");
+        return 1;
+    }
+
+    const char *downlink_hex = "0001113C";
+    int interval;
+    if (parse_downlink_message(downlink_hex, &interval) == 0) {
+        printf("Updated reporting interval: %d seconds\n", interval);
+    } else {
+        fprintf(stderr, "Failed to parse downlink message.\n");
+    }
+
+    return 0;
+}
