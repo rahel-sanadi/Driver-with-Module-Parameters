@@ -1,0 +1,13 @@
+Simple IOCTL Character Driver
+ Description
+
+This Linux kernel module implements a character device driver with an IOCTL interface.
+It allows user-space applications to set and get an integer variable inside the kernel using ioctl() system calls.
+
+Skills Covered
+
+Implementing unlocked_ioctl() in kernel modules
+
+Defining and using IOCTL macros (_IOW, _IOR)
+
+Exchanging data between user space and kernel space using copy_to_user() and copy_from_user()
