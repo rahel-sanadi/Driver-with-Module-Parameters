@@ -1,0 +1,35 @@
+#include <linux/init.h>
+#include <linux/module.h>
+#include <linux/kernel.h>
+#include <linux/slab.h>  // For kmalloc() and kfree()
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("YourName");
+MODULE_DESCRIPTION("Kernel Memory Allocator Test Module");
+
+static char *buffer;     // Pointer to memory block
+static int size = 128;   // Size of buffer to allocate
+
+// Called when module is loaded
+static int __init kmalloc_test_init(void) {
+    buffer = kmalloc(size, GFP_KERNEL); // Allocate memory
+
+    if (!buffer) {
+        printk("kmalloc_test: Memory allocation failed!\n");
+        return -ENOMEM;
+    }
+
+    printk("kmalloc_test: Allocated %d bytes at address %px\n", size, buffer);
+    return 0;
+}
+
+// Called when module is removed
+static void __exit kmalloc_test_exit(void) {
+    if (buffer) {
+        kfree(buffer);  // Free memory
+        printk("kmalloc_test: Freed memory at address %px\n", buffer);
+    }
+}
+
+module_init(kmalloc_test_init);
+module_exit(kmalloc_test_exit);
