@@ -1,0 +1,23 @@
+#include <linux/init.h>
+#include <linux/module.h>
+#include <linux/kernel.h>
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("YourName");
+MODULE_DESCRIPTION("Kernel Module that counts how many times it has been loaded");
+
+static int counter = 0;
+
+static int __init log_counter_init(void) {
+    counter++;
+    printk("LogCounter: Module loaded %d time(s)\n", counter);
+    return 0;
+}
+
+static void __exit log_counter_exit(void) {
+    printk( "LogCounter: Module removed.\n");
+}
+
+module_init(log_counter_init);
+module_exit(log_counter_exit);
+
