@@ -1,0 +1,22 @@
+# Asset Tracking Device Simulation
+
+## Overview
+This C program simulates an asset tracking device that:
+- Generates random temperature and GPS data.
+- Packages the data into a compact binary payload.
+- Displays the payload as a hex-encoded string.
+- (Bonus) Parses a downlink hex message to update the reporting interval.
+
+## Compilation
+gcc main.c payload.c -o asset_tracking
+
+## Running
+./asset_tracking
+
+## Example Output
+Generated Sensor Data:
+Temperature: 25.12 °C
+Latitude: 45.67890
+Longitude: 89.12345
+Payload: 1A2B3C4D5E6F7081AABBCCDD
+Updated reporting interval: 60 seconds
