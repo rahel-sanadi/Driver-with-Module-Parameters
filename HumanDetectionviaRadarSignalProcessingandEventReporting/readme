@@ -1,0 +1,77 @@
+
+#  Human Detection via Radar - Signal Processing and Event Reporting
+
+## Overview
+This project simulates human detection using radar data and includes:
+- Threshold-based detection.
+- Moving average detection (with configurable window size).
+- Logs detection events with timestamps.
+- JSON and optional binary packet output.
+
+## Project Structure
+- src/
+  - main.c – Program entry point.
+  - radar.c / radar.h – Radar data reading/generation.
+  - detector.c / detector.h – Detection algorithms.
+  - logger.c / logger.h – Logging in JSON, text, and binary formats.
+  - common.h – Shared constants.
+- tests/
+  - normal.txt – Input file for normal detection.
+  - no_detection.txt – Input file with no detections.
+  - moving_avg.txt – Input file for moving average testing.
+- Makefile – To compile the project.
+- test_runner.sh – Script to run all test cases.
+- README.txt – How to build and run the project.
+
+Requirements
+- GCC or MinGW-w64 (Windows).
+- VS Code (with Microsoft C/C++ extension).
+
+## Compilation (VS Code)
+###  Terminal
+```
+gcc -std=c11 -Wall -Wextra -O2 src/main.c src/radar.c src/detector.c src/logger.c -o radar_detect
+```
+
+## Running the Program
+Example:
+```
+./radar_detect --file tests/normal.txt --mode threshold --threshold 0.3 --log normal.log --bin normal.bin
+```
+
+## Test Cases
+1. Normal Case
+```
+./radar_detect --file tests/normal.txt --mode threshold --threshold 0.3 --log normal.log --bin normal.bin
+```
+Expected: Detections for values > 0.3 (0.4, 0.35, 0.5, 0.45).
+
+2. No Detection
+```
+./radar_detect --file tests/no_detection.txt --mode threshold --threshold 0.3
+```
+Expected: No detections.
+
+3. Moving Average
+```
+./radar_detect --file tests/moving_avg.txt --mode ma --threshold 0.3 --window 3 --log ma.log
+```
+
+4. File Not Found
+```
+./radar_detect --file tests/missing.txt --mode threshold
+```
+Expected: Error opening file.
+
+5. Bonus: Binary Packets
+Binary file normal.bin will be created.
+
+## Running All Test Cases
+```
+chmod +x test_runner.sh
+./test_runner.sh
+```
+
+## Author
+Rahil Sanadi
+date:25/07/2025
