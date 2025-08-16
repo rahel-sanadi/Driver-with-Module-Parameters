@@ -1,0 +1,16 @@
+Sysfs Virtual Flag Toggle Kernel Module
+  Description
+
+This Linux kernel module demonstrates how to create a sysfs interface that allows user-space applications to interact with a virtual flag variable inside the kernel.
+
+The module creates a directory /sys/kernel/virtual_flag/ with a file enabled.
+
+Users can read or write to this file to toggle the virtual flag.
+
+Skills Covered
+
+Working with kobject and sysfs_create_file()
+
+Reading/writing to sysfs attributes
+
+User-to-kernel data exchange via sysfs
