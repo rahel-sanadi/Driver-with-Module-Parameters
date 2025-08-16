@@ -1,0 +1,58 @@
+#include <linux/module.h>
+#include <linux/kernel.h>
+#include <linux/init.h>
+#include <linux/kobject.h>
+#include <linux/sysfs.h>
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("YourName");
+MODULE_DESCRIPTION("Sysfs Virtual Flag Toggle");
+
+// Global flag variable
+static int virtual_flag = 0;
+
+// kobject pointer
+static struct kobject *virtual_kobj;
+
+// Read handler: shows current value when you do "cat"
+static ssize_t enabled_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf) {
+    printk("sysfs_flag: Read flag = %d\n", virtual_flag);
+    return sprintf(buf, "%d\n", virtual_flag);
+}
+
+// Write handler: sets value when you do "echo"
+static ssize_t enabled_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count) {
+    sscanf(buf, "%d", &virtual_flag);
+    printk("sysfs_flag: Updated flag = %d\n", virtual_flag);
+    return count;
+}
+
+// Create attribute for sysfs
+static struct kobj_attribute enabled_attr = __ATTR(enabled, 0660, enabled_show, enabled_store);
+
+// Module init
+static int __init sysfs_flag_init(void) {
+    // Create /sys/kernel/virtual_flag/
+    virtual_kobj = kobject_create_and_add("virtual_flag", kernel_kobj);
+    if (!virtual_kobj)
+        return -ENOMEM;
+
+    // Create /sys/kernel/virtual_flag/enabled
+    if (sysfs_create_file(virtual_kobj, &enabled_attr.attr)) {
+        kobject_put(virtual_kobj);
+        return -ENOMEM;
+    }
+
+    printk("sysfs_flag: Module loaded\n");
+    return 0;
+}
+
+// Module exit
+static void __exit sysfs_flag_exit(void) {
+    sysfs_remove_file(virtual_kobj, &enabled_attr.attr);  // Remove file
+    kobject_put(virtual_kobj);                             // Free object
+    printk("sysfs_flag: Module unloaded\n");
+}
+
+module_init(sysfs_flag_init);
+module_exit(sysfs_flag_exit);
