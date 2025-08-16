@@ -1,0 +1,14 @@
+Kernel Log Counter Module
+
+Description
+
+This Linux kernel module keeps track of how many times it has been loaded into the kernel and logs that count using printk().
+Every time you insert the module, it increments a counter and displays the count in the kernel log.
+
+Skills Covered
+
+Using static/global variables inside kernel modules
+
+Implementing init (module_init) and exit (module_exit) functions
+
+Logging events with printk()
