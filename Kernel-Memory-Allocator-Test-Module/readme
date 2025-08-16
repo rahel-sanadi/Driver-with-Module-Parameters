@@ -1,0 +1,13 @@
+Kernel Memory Allocator Test Module
+ Description
+
+This Linux kernel module demonstrates dynamic memory allocation inside the kernel using kmalloc() and safe memory release with kfree().
+On module load, it allocates a small memory buffer (128 bytes by default), logs its address and size, and frees it when the module is removed.
+
+ Skills Covered
+
+Memory allocation in kernel space using kmalloc()
+
+Memory deallocation using kfree()
+
+Safe resource management in kernel modules
