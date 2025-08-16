@@ -1,0 +1,49 @@
+#include <linux/init.h>
+#include <linux/module.h>
+#include <linux/fs.h>
+#include <linux/uaccess.h>
+
+#define DEVICE_NAME "static_msg"
+#define MESSAGE "Welcome to Kernel World!\n"
+
+MODULE_LICENSE("GPL");
+
+static int major;
+static char message[] = MESSAGE;
+
+// This function runs when the user reads from the device
+static ssize_t my_read(struct file *file, char __user *buf, size_t count, loff_t *ppos) {
+    int len = strlen(message);
+
+    if (*ppos >= len) // If end of message, stop reading
+        return 0;
+
+    if (copy_to_user(buf, message + *ppos, len - *ppos) != 0)
+        return -EFAULT;
+
+    *ppos += len - *ppos; // Move file pointer
+    return len;           // Return number of bytes sent
+}
+
+// File operations (only read is used here)
+static struct file_operations fops = {
+    .owner = THIS_MODULE,
+    .read = my_read,
+};
+
+// Module load
+static int __init static_msg_init(void) {
+    major = register_chrdev(0, DEVICE_NAME, &fops); // Register driver
+    printk("StaticMsg: loaded with major number %d\n", major);
+    return 0;
+}
+
+// Module unload
+static void __exit static_msg_exit(void) {
+    unregister_chrdev(major, DEVICE_NAME); // Unregister driver
+    printk("StaticMsg: unloaded\n");
+}
+
+module_init(static_msg_init);
+module_exit(static_msg_exit);
+
