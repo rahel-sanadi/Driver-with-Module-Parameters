@@ -1,0 +1,22 @@
+LED Control using Character Driver
+📌 Description
+
+This project demonstrates a simple Linux character device driver that controls a simulated LED (or real GPIO if running on embedded hardware).
+
+Writing 1 to /dev/led turns the LED ON.
+
+Writing 0 to /dev/led turns the LED OFF.
+
+Any other input is treated as invalid.
+
+It is designed for learning and experimenting with Linux device driver development.
+
+🎯 Skills Covered
+
+Character device registration (register_chrdev, unregister_chrdev)
+
+Implementing write() file operation
+
+GPIO output handling (if real hardware is available)
+
+Simulation support using QEMU or kernel log messages
