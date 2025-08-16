@@ -1,0 +1,17 @@
+Static Message Reader Driver
+ Description
+
+This project implements a simple Linux character device driver that always returns a static message:
+
+Welcome to Kernel World!
+
+
+whenever the device is read. It is useful as a beginner-level kernel driver project to understand the read() file operation and how user space interacts with kernel space.
+
+Skills Covered
+
+Implementing the read() file operation in a character driver
+
+Returning a fixed response from the kernel to user space
+
+Registering a basic character device driver (register_chrdev, unregister_chrdev)
