@@ -1,0 +1,13 @@
+Kernel Module: Print Current Time
+Description
+
+This Linux kernel module demonstrates how to fetch and print the current system time when the module is loaded.
+It uses kernel time functions to retrieve the current time in seconds and nanoseconds, then logs it with printk().
+
+Skills Covered
+
+Working with kernel time functions (ktime_get(), ktime_to_timespec64())
+
+Logging time information via printk()
+
+Understanding kernel time structures (ktime_t, timespec64)
