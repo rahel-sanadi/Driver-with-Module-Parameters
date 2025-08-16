@@ -1,0 +1,79 @@
+ Smart Parking Simulation using FSMs
+
+Project Title: Smart Parking Simulation Using FSM for Radar and Camera Modules  
+Author: Rahel Sanadi  
+Date: 25/07/2025
+
+Description:
+This project simulates a simple embedded-style parking system using Finite State Machines (FSMs). It uses two FSMs: one for radar-based vehicle detection and another for camera-based number plate recognition. The program reads parking event logs from an input file called `car_info.txt` and writes the processed output to `output.txt`, showing each car's plate number and its parking duration.
+
+Files Included:
+- main.c           : Main driver program
+- radar.c/.h       : Radar FSM logic (simulated vehicle detection)
+- camera.c/.h      : Camera FSM logic (simulated plate recognition)
+- car_info.txt     : Input file with parking data
+- output.txt       : Output file generated after running
+- README.txt       : This instruction file
+
+Input Format (car_info.txt):
+[EntryTime] [PlateNumber] [ExitTime]
+
+Example:
+08:00 KA01AB1234 10:15
+09:30 MH02CD5678 11:00
+12:00 TN03EF9012 12:45
+07:00 GJ05GH3333 08:30
+18:59 RJ14EE5555 23:59
+
+Output Format (output.txt):
+[PlateNumber] [Duration in HH:MM]
+
+Example:
+KA01AB1234 02:15
+MH02CD5678 01:30
+TN03EF9012 00:45
+GJ05GH3333 01:30
+RJ14EE5555 05:00
+
+
+How to Compile and Run (using GCC):
+
+Step 1: Make sure you have GCC installed. You can check using `gcc --version`.
+
+Step 2: Place all `.c` and `.h` files along with `car_info.txt` in the same folder.
+
+Step 3: Open terminal/command prompt in that folder (Vs code).
+
+Step 4: Compile using:
+    gcc main.c radar.c camera.c -o smart_parking
+
+Step 5: Run the compiled program:
+    ./smart_parking 
+
+Step 6: After execution, check `output.txt` in the same folder for results.
+
+Note:If your folder is located somewhere else on your computer and also the above steps are not working try these methods and check to get output:-
+
+1) Use the cd (change directory) command.
+
+eg:- cd C:\Users\YourName\Documents\C_Projects\SmartParking
+
+2)If your folder is on another drive (like D: or E:) then switch drives first:
+
+eg:-  D:
+      cd path\to\your\folder
+
+3) List Files to Confirm You're in the Right Place:
+
+eg:- dir
+
+4) Compile the Code (Make sure GCC is installed) (vs code):
+
+eg:- gcc main.c radar.c camera.c -o smart_parking
+
+5) Run the Program:
+
+eg:- smart_parking.exe
+
+
+
