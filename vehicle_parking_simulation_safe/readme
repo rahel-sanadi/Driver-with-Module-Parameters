@@ -1,0 +1,143 @@
+Vehicle Parking Simulation - README
+
+Author: Rahel Sanadi
+Date: 25 July 2025
+
+----------------------------------------
+Overview:
+----------------------------------------
+This project simulates an automated vehicle parking system using C.
+It reads occupancy sensor data from a file and tracks the status of
+three parking spots. When a car enters or leaves, the system logs
+the event with a timestamp and updates the status accordingly.
+
+A daily count of entries for each parking spot is also maintained and
+printed at the end of the simulation.
+
+----------------------------------------
+Assumptions:
+----------------------------------------
+- The program reads input from a file named 'parking_data.txt'.
+- Each line in the file represents a new time step.
+- Each line contains 3 integers (0 or 1), separated by spaces:
+    - 0 = Empty (exit)
+    - 1 = Occupied (entry)
+- Only status **changes** are logged (entry or exit events).
+- There are 3 parking spots indexed as Spot 0, Spot 1, Spot 2.
+
+Example line from parking_data.txt:
+    1 0 1
+(Spot 0 = occupied, Spot 1 = empty, Spot 2 = occupied)
+
+----------------------------------------
+Files Included:
+----------------------------------------
+- main.c                    --> Entry point of the simulation.
+- parking_simulation.c      --> Core logic for parking state tracking and logging.
+- parking_simulation.h      --> Header file with function declarations and macros.
+- parking_data.txt          --> Input file with sensor data (edit to test different cases).
+- README.txt                --> This file.
+
+----------------------------------------
+How to Compile:
+----------------------------------------
+Use GCC from command line or VS Code terminal:
+
+    gcc main.c parking_simulation.c -o parking_sim
+
+----------------------------------------
+How to Run:
+----------------------------------------
+1. Make sure 'parking_data.txt' is present in the same directory.
+2. Open terminal in that directory.
+3. Run the executable:
+
+    - On Windows (Command Prompt or PowerShell):
+        ./parking_simulation
+
+The output will show detected parking events with timestamps, and
+at the end, daily counts of entries for each spot.
+
+----------------------------------------
+Testing Notes:
+----------------------------------------
+Test Case 1: Normal Operation
+●	Description: Simulate a typical sequence of parking events from a file.
+Input File (parking_data.txt):
+
+0 0 0
+1 0 1
+1 1 0
+0 1 0
+
+Expected Output:
+
+Spot 1: Entry at [timestamp]
+Spot 3: Entry at [timestamp]
+Spot 2: Entry at [timestamp]
+Spot 1: Exit at [timestamp]
+Spot 3: Exit at [timestamp]
+Spot 1: 1 entry today
+Spot 2: 1 entry today
+Spot 3: 1 entry today
+●	Verification: Check that entry/exit events are detected correctly and daily counts (if implemented) are accurate.
+Test Case 2: No Status Changes
+●	Description: All spots remain in the same state across time steps.
+Input File (parking_data.txt):
+
+0 0 0
+0 0 0
+0 0 0
+●	Expected Output: (No output since there are no status changes)
+●	Verification: Ensure the program does not generate any report payloads when statuses remain unchanged.
+
+Test Case 3: Multiple Events on One Spot
+●	Description: A single spot experiences multiple entries and exits.
+Input File (parking_data.txt):
+ 0 0 0
+1 0 0
+0 0 0
+1 0 0
+
+Expected Output:
+
+Spot 1: Entry at [timestamp]
+Spot 1: Exit at [timestamp]
+Spot 1: Entry at [timestamp]
+Spot 1: 2 entries today
+Spot 2: 0 entries today
+Spot 3: 0 entries today
+●	Verification: Confirm that multiple events for the same spot are handled correctly, and daily counts reflect all entries.
+Test Case 4: File Not Found Error
+●	Description: Simulate a failure to locate the input file.
+●	Input: Attempt to read from a non-existent file (e.g., parking_data.txt is missing).
+●	Expected Output:
+Error opening file: No such file or directory
+
+●	Verification: Ensure the program exits gracefully with an appropriate error message.
+Test Case 5: Bonus - Daily Counts Reset (Optional)
+●	Description: Simulate a new day where daily counts should reset (requires additional implementation).
+Input File (parking_data.txt):
+ 0 0 0
+1 0 1
+
+Expected Output (after simulating a new day):
+Spot 1: Entry at [timestamp]
+Spot 3: Entry at [timestamp]
+Spot 1: 1 entry today
+Spot 2: 0 entries today
+Spot 3: 1 entry today
+[New day starts]
+Spot 1: 0 entries today
+Spot 2: 0 entries today
+Spot 3: 0 entries today
+●	Verification: Validate that daily counts reset correctly at the start of a new day.
+
+
+----------------------------------------
+Tested Environment:
+----------------------------------------
+- Compiler: GCC (MinGW on Windows 10)
+- Editor: Visual Studio Code
+----------------------------------------
+
