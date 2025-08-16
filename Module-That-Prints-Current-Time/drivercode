@@ -1,0 +1,26 @@
+#include <linux/init.h>              // For module init/exit macros
+#include <linux/module.h>            // For module definitions
+#include <linux/ktime.h>             // For ktime_get()
+#include <linux/timekeeping.h>       // For ktime_to_timespec64()
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("YourName");
+MODULE_DESCRIPTION("Module that prints current time at load");
+
+static int __init print_time_init(void) {
+    ktime_t now;                      // Kernel time object
+    struct timespec64 ts;            //  time format
+
+    now = ktime_get();               // Get current time
+    ts = ktime_to_timespec64(now);   // Convert to seconds and nanoseconds
+
+    printk( "Current time: %lld seconds and %ld nanoseconds\n", (s64)ts.tv_sec, ts.tv_nsec);
+    return 0;
+}
+
+static void __exit print_time_exit(void) {
+    printk("Time module removed\n");
+}
+
+module_init(print_time_init);
+module_exit(print_time_exit);
